@@ -52,7 +52,7 @@ class MainWindow(QMainWindow):
         self.fnim = fnim
         pixmap = QPixmap(self.fname[0])
         self.lbl_im.setPixmap(pixmap)
-        gogo
+
         # print(self.fnim)
         # C:/Users/IWA-LSM/Desktop/EBW/DBProgram_pyqt/input.PNG
 
