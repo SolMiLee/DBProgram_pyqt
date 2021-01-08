@@ -50,13 +50,13 @@ class Window(QWidget):
     저장 버튼을 누르면 새로운 파일로 데이터를 저장할 것인지 
     기존의 파일에 저장할 것인지 선택하는 창을 띄워야한다.
     """
-    def SelectFileSave(self):
-        self.dialog.setWindowTitle('어떤 파일에 저장하시겠습니까?')
-        btn_newfile = QPushButton("New File", self)
-        btn_existfile = QPushButton("Existing File", self)
-        self.show()
-
-    # def newdatafile(self):
+    # def SelectFileSave(self):
+    #     self.dialog.setWindowTitle('어떤 파일에 저장하시겠습니까?')
+    #     btn_newfile = QPushButton("New File", self)
+    #     btn_existfile = QPushButton("Existing File", self)
+    #     self.show()
+    #
+    # # def newdatafile(self):
 
 
 """

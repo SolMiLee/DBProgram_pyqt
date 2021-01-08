@@ -10,8 +10,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QDialog
-from PyQt5.QtWidgets import QHBoxLayout
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -24,7 +23,7 @@ class MainWindow(QMainWindow):
 
         lb1 = QLabel("값1")
         lbe1 = QLineEdit(self)
-        self.lbe1 =lbe1
+        self.lbe1 = lbe1
 
         btn1 = QPushButton("이미지")
         btn1.clicked.connect(self.ImagebuttonClicked)
@@ -57,7 +56,21 @@ class MainWindow(QMainWindow):
         # C:/Users/IWA-LSM/Desktop/EBW/DBProgram_pyqt/input.PNG
 
     def savebtnEXfile(self):
-        fname_ex = QFileDialog.getOpenFileName(self,'')
-        fnameee_ex=fname_ex[0]
+        fname_ex = QFileDialog.getOpenFileName(self, 'Open File')
+        fnameee_ex = fname_ex[0]
         self.fnameee_ex = fnameee_ex
-        wb_ex = openpyxl.Workbook('%s'%self.fnameee_ex)
+        wb_ex = openpyxl.load_workbook('%s' % fnameee_ex)
+        ws = wb_ex.active
+        lb_text = self.lbe1.text()
+        row_ex = len(ws['A'])+1
+        ws.cell(row=row_ex, column=1).value = lb_text
+        ws.cell(row=row_ex, column=1).hyperlink = self.fnim
+
+        wb_ex.save('%s' %self.fnameee_ex)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    win = MainWindow()
+    win.show()
+    sys.exit(app.exec_())
