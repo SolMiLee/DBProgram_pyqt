@@ -65,6 +65,8 @@ class window(QMainWindow):
         lb_text = self.lbe1.text()
         ws.cell(row=1,column=1).value = lb_text
         ws.cell(row=1, column=1).hyperlink = self.fnim
+        for i in range(2,10):
+            ws.cell(row=i,column=2).value=int(i)
         wb.save('%s'%self.fnameee)
 
 

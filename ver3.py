@@ -1,8 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtWidgets import QWidget
+import openpyxl
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QComboBox
@@ -13,9 +11,11 @@ from PyQt5.QtWidgets import QGroupBox
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QTabWidget
 from PyQt5.QtWidgets import QVBoxLayout
-import openpyxl
+from PyQt5.QtWidgets import QWidget
 
 
 class MainWindow(QMainWindow):
@@ -206,7 +206,7 @@ class TabData(QWidget):
         btnNew = QPushButton('New File')
 
         btnEx.clicked.connect(self.SaveExsitantFile)
-        # btnNew.clicked.connect(self.SaveNewFile)
+        btnNew.clicked.connect(self.SaveNewFile)
 
         hbox_save = QHBoxLayout()
         hbox_save.addWidget(btnEx)
@@ -217,6 +217,7 @@ class TabData(QWidget):
         return group_save
 
     def SaveExsitantFile(self):
+
         fname_Exfile = QFileDialog.getOpenFileName(self, 'Open File')
         address_Exfile = fname_Exfile[0]
         self.address_Exfile = address_Exfile
@@ -232,21 +233,102 @@ class TabData(QWidget):
 
         textinput_sclength1 = float(self.input_sclength1.text())
         textinput_sclength2 = float(self.input_sclength2.text())
-
         textinput_fobs = float(self.input_fobs.text())
         textinput_wd = float(self.input_wd.text())
         textinput_bw = float(self.input_bw.text())
         textinput_fw = float(self.input_fw.text())
         textinput_velocity = float(self.input_velocity.text())
 
-        textcosmetic_sclength1 = float(self.cosmetic_sclength1.text())
-        textcosmetic_sclength2 = float(self.cosmetic_sclength2.text())
+        if self.group_cosmetic.isChecked()==False:
+            self.cosmetic_sctype = str(" ")
+            textcosmetic_sclength1 = self.cosmetic_sclength1.setText(" ")
+            textcosmetic_sclength2 = self.cosmetic_sclength2.setText(" ")
 
-        textcosmetic_fobs = float(self.cosmetic_fobs.text())
-        textcosmetic_wd = float(self.cosmetic_wd.text())
-        textcosmetic_bw = float(self.cosmetic_bw.text())
-        textcosmetic_fw = float(self.cosmetic_fw.text())
-        textcosmetic_velocity = float(self.cosmetic_velocity.text())
+            textcosmetic_fobs = self.cosmetic_fobs.setText(" ")
+            textcosmetic_wd = self.cosmetic_wd.setText(" ")
+            textcosmetic_bw = self.cosmetic_bw.setText(" ")
+            textcosmetic_fw = self.cosmetic_fw.setText(" ")
+            textcosmetic_velocity = self.cosmetic_velocity.setText(" ")
+
+        elif self.group_cosmetic.isChecked()==True:
+            textcosmetic_sclength1 = float(self.cosmetic_sclength1.text())
+            textcosmetic_sclength2 = float(self.cosmetic_sclength2.text())
+            textcosmetic_fobs = float(self.cosmetic_fobs.text())
+            textcosmetic_wd = float(self.cosmetic_wd.text())
+            textcosmetic_bw = float(self.cosmetic_bw.text())
+            textcosmetic_fw = float(self.cosmetic_fw.text())
+            textcosmetic_velocity = float(self.cosmetic_velocity.text())
+
+        textoutput_beadW = float(self.output_beadW.text())
+        textoutput_beadH = float(self.output_beadH.text())
+        textoutput_backW = float(self.output_backW.text())
+        textoutput_backH = float(self.output_backH.text())
+        textoutput_50W = float(self.output_50W.text())
+        textoutput_50H = float(self.output_50H.text())
+        textoutput_crack = float(self.output_crack.text())
+        textoutput_porosity = float(self.output_porosity.text())
+
+        allvariablelist = [textsetup_name, textsetup_company, self.setup_use, textsetup_material, self.setup_weldtype,
+                           textsetup_diameter, textsetup_thickness, textsetup_backth, textinput_fobs,
+                           textinput_wd, textinput_bw, textinput_fw, textinput_velocity, self.input_sctype,
+                           textinput_sclength1, textinput_sclength2, textcosmetic_fobs, textcosmetic_wd,
+                           textcosmetic_wd, textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity,
+                           self.cosmetic_sctype, textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW,
+                           textoutput_beadH, textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H,
+                           textoutput_crack, textoutput_porosity]
+
+        len(allvariablelist)
+        row_ex = len(ws_ex['A']) + 1
+        print("ok")
+        for i in range(0, len(allvariablelist)):
+            print("ok"+str(i))
+            ws_ex.cell(row=row_ex, column=i + 1).value = allvariablelist[i]
+
+        ws_ex.cell(row=row_ex, column=1).hyperlink = self.fname_openimage
+        wb_ex.save('%s' % self.address_Exfile)
+
+    def SaveNewFile(self):
+        fname_Newfile = QFileDialog.getSaveFileName(self, 'Save File', '', ".xlsx(*.xlsx)")
+        address_Newfile = fname_Newfile[0]
+        self.address_Newfile = address_Newfile
+        wb_new = openpyxl.Workbook()
+        ws_new = wb_new.active
+        print("ok1")
+
+        textsetup_name = self.setup_name.text()
+        textsetup_company = self.setup_company.text()
+        textsetup_material = self.setup_company.text()
+        textsetup_diameter = float(self.setup_diameter.text())
+        textsetup_thickness = float(self.setup_thickness.text())
+        textsetup_backth = float(self.setup_backth.text())
+
+        textinput_sclength1 = float(self.input_sclength1.text())
+        textinput_sclength2 = float(self.input_sclength2.text())
+        textinput_fobs = float(self.input_fobs.text())
+        textinput_wd = float(self.input_wd.text())
+        textinput_bw = float(self.input_bw.text())
+        textinput_fw = float(self.input_fw.text())
+        textinput_velocity = float(self.input_velocity.text())
+
+        if self.group_cosmetic.isChecked()==False:
+            self.cosmetic_sctype = str(" ")
+            textcosmetic_sclength1 = self.cosmetic_sclength1.setText(" ")
+            textcosmetic_sclength2 = self.cosmetic_sclength2.setText(" ")
+
+            textcosmetic_fobs = self.cosmetic_fobs.setText(" ")
+            textcosmetic_wd = self.cosmetic_wd.setText(" ")
+            textcosmetic_bw = self.cosmetic_bw.setText(" ")
+            textcosmetic_fw = self.cosmetic_fw.setText(" ")
+            textcosmetic_velocity = self.cosmetic_velocity.setText(" ")
+
+        elif self.group_cosmetic.isChecked()==True:
+            textcosmetic_sclength1 = float(self.cosmetic_sclength1.text())
+            textcosmetic_sclength2 = float(self.cosmetic_sclength2.text())
+            textcosmetic_fobs = float(self.cosmetic_fobs.text())
+            textcosmetic_wd = float(self.cosmetic_wd.text())
+            textcosmetic_bw = float(self.cosmetic_bw.text())
+            textcosmetic_fw = float(self.cosmetic_fw.text())
+            textcosmetic_velocity = float(self.cosmetic_velocity.text())
 
         textoutput_beadW = float(self.output_beadW.text())
         textoutput_beadH = float(self.output_beadH.text())
@@ -268,74 +350,17 @@ class TabData(QWidget):
                            textinput_wd, textinput_bw, textinput_fw, textinput_velocity, self.input_sctype,
                            textinput_sclength1, textinput_sclength2, textcosmetic_fobs, textcosmetic_wd,
                            textcosmetic_wd, textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity,
-                           self.cosmetic_sctype
-            , textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW, textoutput_beadH,
-                           textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H, textoutput_crack,
-                           textoutput_porosity]
-
-        len(allvariablelist)
-        row_ex = len(ws_ex['A']) + 1
-        ws_ex.cell(row=row_ex + 1, column=1).hyperlink = self.fname_openimage
-
+                           self.cosmetic_sctype, textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW,
+                           textoutput_beadH, textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H,
+                           textoutput_crack, textoutput_porosity]
+        print("ok2")
         for i in range(0, len(allvariablelist)):
-            if self.group_cosmetic.isChecked()==True:
-                ws_ex.cell(row=row_ex + 1, column=i + 1).value = allvariablelist[i]
-                print("OK" + str(allvariablelist[i]))
-            elif self.group_cosmetic.isChecked()==False:
-                if i in range(16, 25):
-                    continue
-                else:
-                    ws_ex.cell(row=row_ex + 1, column=i + 1).value = allvariablelist[i]
+            ws_new.cell(row=1, column=i).value = allnamelist[i]
+            ws_new.cell(row=2, column=i + 1).value = allvariablelist[i]
+            print("ok3")
 
-        wb_ex.save('%s' % self.address_Exfile)
-
-        # ws_ex.cell(row=row_ex, column=1).value =tsetup_name
-        # ws_ex.cell(row=row_ex, column=1).hyperlink = self.fname_openimage
-        # ws_ex.cell(row=row_ex, column=2).value =tsetup_company
-        # ws_ex.cell(row=row_ex, column=3).value =self.setup_use
-        # ws_ex.cell(row=row_ex, column=4).value =self.setup_material
-        # ws_ex.cell(row=row_ex, column=5).value = self.setup_diameter
-        # ws_ex.cell(row=row_ex, column=5).value =self.setup_thickness
-        # ws_ex.cell(row=row_ex, column=6).value =self.setup_backth
-        #
-        # ws_ex.cell(row=row_ex, column=7).value = self.input_fobs
-        # ws_ex.cell(row=row_ex, column=8).value =self.input_wd
-        # ws_ex.cell(row=row_ex, column=9).value =self.input_bw
-        # ws_ex.cell(row=row_ex, column=10).value =self.input_fw
-        # ws_ex.cell(row=row_ex, column=11).value =self.input_velocity
-        # ws_ex.cell(row=row_ex, column=12).value =self.input_sctype
-        # ws_ex.cell(row=row_ex, column=13).value =self.input_sclength1
-        # ws_ex.cell(row=row_ex, column=14).value =self.input_sclength1
-        #
-        # if self.group_cosmetic.setCheckable == True:
-        #     ws_ex.cell(row=row_ex, column=15).value = self.cosmetic_fobs
-        #     ws_ex.cell(row=row_ex, column=16).value =self.cosmetic_wd
-        #     ws_ex.cell(row=row_ex, column=17).value =self.cosmetic_bw
-        #     ws_ex.cell(row=row_ex, column=18).value =self.cosmetic_fw
-        #     ws_ex.cell(row=row_ex, column=19).value =self.cosmetic_velocity
-        #     ws_ex.cell(row=row_ex, column=20).value =self.cosmetic_sctype
-        #     ws_ex.cell(row=row_ex, column=21).value =self.cosmetic_sclength1
-        #     ws_ex.cell(row=row_ex, column=22).value =self.cosmetic_sclength1
-        #
-        # ws_ex.cell(row=row_ex, column=23).value = self.output_beadW
-        # ws_ex.cell(row=row_ex, column=24).value = self.output_beadH
-        # ws_ex.cell(row=row_ex, column=25).value = self.output_backW
-        # ws_ex.cell(row=row_ex, column=26).value = self.output_backH
-        # ws_ex.cell(row=row_ex, column=27).value = self.output_50W
-        # ws_ex.cell(row=row_ex, column=28).value = self.output_50H
-        # ws_ex.cell(row=row_ex, column=29).value = self.output_crack
-        # ws_ex.cell(row=row_ex, column=30).value = self.output_porosity
-
-    # def SaveNewFile(self):
-    #     fname_save = QFileDialog.getSaveFileName(self, 'Save File', '', ".xlsx(*.xlsx)")
-    #     self.fnameee = fname_save[0]
-    #     wb = Workbook()
-    #     ws = wb.active
-    #     lb_text = self.lbe1.text()
-    #     ws.cell(row=1,column=1).value = lb_text
-    #     ws.cell(row=1, column=1).hyperlink = self.fnim
-    #     wb.save('%s'%self.fnameee)
-
+        ws_new.cell(row=2, column=1).hyperlink = self.fname_openimage
+        wb_new.save('%s' % self.address_Newfile)
 
 class TabCompare(QWidget):
     def __init__(self):
@@ -366,6 +391,3 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     w = MainWindow()
     sys.exit(app.exec_())
-
-
-

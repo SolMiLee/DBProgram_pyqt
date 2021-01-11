@@ -104,6 +104,7 @@ class Tabdata(QWidget):
         setup_weldtype = flay_setup.addRow("Weld Type: ", weldtype_combo)
         setup_thickness = flay_setup.addRow("Thickness(mm): ", QDoubleSpinBox())
         setup_backingth = flay_setup.addRow("Backing Thickness(mm): ", QDoubleSpinBox())
+
         return group_setup
 
     def grouptestinput(self):
