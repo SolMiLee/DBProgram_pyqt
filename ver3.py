@@ -14,7 +14,6 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QTabWidget
-from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QWidget
 
 
@@ -239,7 +238,7 @@ class TabData(QWidget):
         textinput_fw = float(self.input_fw.text())
         textinput_velocity = float(self.input_velocity.text())
 
-        if self.group_cosmetic.isChecked()==False:
+        if self.group_cosmetic.isChecked() == False:
             self.cosmetic_sctype = str(" ")
             textcosmetic_sclength1 = self.cosmetic_sclength1.setText(" ")
             textcosmetic_sclength2 = self.cosmetic_sclength2.setText(" ")
@@ -250,7 +249,7 @@ class TabData(QWidget):
             textcosmetic_fw = self.cosmetic_fw.setText(" ")
             textcosmetic_velocity = self.cosmetic_velocity.setText(" ")
 
-        elif self.group_cosmetic.isChecked()==True:
+        elif self.group_cosmetic.isChecked() == True:
             textcosmetic_sclength1 = float(self.cosmetic_sclength1.text())
             textcosmetic_sclength2 = float(self.cosmetic_sclength2.text())
             textcosmetic_fobs = float(self.cosmetic_fobs.text())
@@ -272,16 +271,14 @@ class TabData(QWidget):
                            textsetup_diameter, textsetup_thickness, textsetup_backth, textinput_fobs,
                            textinput_wd, textinput_bw, textinput_fw, textinput_velocity, self.input_sctype,
                            textinput_sclength1, textinput_sclength2, textcosmetic_fobs, textcosmetic_wd,
-                           textcosmetic_wd, textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity,
-                           self.cosmetic_sctype, textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW,
-                           textoutput_beadH, textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H,
-                           textoutput_crack, textoutput_porosity]
+                           textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity, self.cosmetic_sctype,
+                           textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW, textoutput_beadH,
+                           textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H, textoutput_crack,
+                           textoutput_porosity]
 
-        len(allvariablelist)
         row_ex = len(ws_ex['A']) + 1
-        print("ok")
+        print(row_ex)
         for i in range(0, len(allvariablelist)):
-            print("ok"+str(i))
             ws_ex.cell(row=row_ex, column=i + 1).value = allvariablelist[i]
 
         ws_ex.cell(row=row_ex, column=1).hyperlink = self.fname_openimage
@@ -293,7 +290,6 @@ class TabData(QWidget):
         self.address_Newfile = address_Newfile
         wb_new = openpyxl.Workbook()
         ws_new = wb_new.active
-        print("ok1")
 
         textsetup_name = self.setup_name.text()
         textsetup_company = self.setup_company.text()
@@ -310,7 +306,7 @@ class TabData(QWidget):
         textinput_fw = float(self.input_fw.text())
         textinput_velocity = float(self.input_velocity.text())
 
-        if self.group_cosmetic.isChecked()==False:
+        if self.group_cosmetic.isChecked() == False:
             self.cosmetic_sctype = str(" ")
             textcosmetic_sclength1 = self.cosmetic_sclength1.setText(" ")
             textcosmetic_sclength2 = self.cosmetic_sclength2.setText(" ")
@@ -321,7 +317,7 @@ class TabData(QWidget):
             textcosmetic_fw = self.cosmetic_fw.setText(" ")
             textcosmetic_velocity = self.cosmetic_velocity.setText(" ")
 
-        elif self.group_cosmetic.isChecked()==True:
+        elif self.group_cosmetic.isChecked() == True:
             textcosmetic_sclength1 = float(self.cosmetic_sclength1.text())
             textcosmetic_sclength2 = float(self.cosmetic_sclength2.text())
             textcosmetic_fobs = float(self.cosmetic_fobs.text())
@@ -349,18 +345,18 @@ class TabData(QWidget):
                            textsetup_diameter, textsetup_thickness, textsetup_backth, textinput_fobs,
                            textinput_wd, textinput_bw, textinput_fw, textinput_velocity, self.input_sctype,
                            textinput_sclength1, textinput_sclength2, textcosmetic_fobs, textcosmetic_wd,
-                           textcosmetic_wd, textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity,
-                           self.cosmetic_sctype, textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW,
-                           textoutput_beadH, textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H,
-                           textoutput_crack, textoutput_porosity]
-        print("ok2")
+                           textcosmetic_bw, textcosmetic_fw, textcosmetic_velocity, self.cosmetic_sctype,
+                           textcosmetic_sclength1, textcosmetic_sclength2, textoutput_beadW, textoutput_beadH,
+                           textoutput_backW, textoutput_backH, textoutput_50W, textoutput_50H, textoutput_crack,
+                           textoutput_porosity]
+
         for i in range(0, len(allvariablelist)):
-            ws_new.cell(row=1, column=i).value = allnamelist[i]
+            ws_new.cell(row=1, column=i + 1).value = allnamelist[i]
             ws_new.cell(row=2, column=i + 1).value = allvariablelist[i]
-            print("ok3")
 
         ws_new.cell(row=2, column=1).hyperlink = self.fname_openimage
         wb_new.save('%s' % self.address_Newfile)
+
 
 class TabCompare(QWidget):
     def __init__(self):
@@ -368,23 +364,84 @@ class TabCompare(QWidget):
         self.initUI()
 
     def initUI(self):
-        name = QLabel('Name:')
-        nameedit = QLineEdit()
-        age = QLabel('Age:')
-        ageedit = QLineEdit()
-        nation = QLabel('Nation:')
-        nationedit = QLineEdit()
+        tapcompatrgrid = QGridLayout()
+        tapcompatrgrid.addWidget(self.groupinputdata(), 0, 0, 4, 1)
+        self.setLayout(tapcompatrgrid)
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(name)
-        vbox.addWidget(nameedit)
-        vbox.addWidget(age)
-        vbox.addWidget(ageedit)
-        vbox.addWidget(nation)
-        vbox.addWidget(nationedit)
-        vbox.addStretch()
+    def groupinputdata(self):
+        groupinputdt = QGroupBox('Input Data')
+        flay_inputdt = QFormLayout()
+        groupinputdt.setLayout(flay_inputdt)
 
-        self.setLayout(vbox)
+        array_use = ["Plate", "Tube"]
+        self.cb_use = QComboBox()
+        self.cb_use.addItems(array_use)
+        self.inputdt_use = self.cb_use.currentText()
+
+        arrya_weldtype = ["BOP", "Butt", "Lap"]
+        self.cb_weldtype = QComboBox()
+        self.cb_weldtype.addItems(arrya_weldtype)
+        self.inputdt_weldtype = self.cb_weldtype.currentText()
+
+        self.inputdt_name = QLineEdit()
+        self.inputdt_company = QLineEdit()
+        self.inputdt_material = QLineEdit()
+        self.inputdt_diameter = QLineEdit()
+        self.inputdt_thickness = QLineEdit()
+        self.inputdt_backth = QLineEdit()
+
+        self.array_sc = ["o", "|", "-", "∩", "∪", "oval"]
+        self.cb_inputdtsc = QComboBox()
+        self.cb_inputdtsc.addItems(self.array_sc)
+        self.inputdt_sctype = self.cb_inputdtsc.currentText()
+
+        hlay_sc = QHBoxLayout()
+        self.inputdt_sclength1 = QLineEdit()
+        self.inputdt_sclength2 = QLineEdit()
+
+        hlay_sc.addWidget(self.inputdt_sclength1)
+        hlay_sc.addWidget(self.inputdt_sclength2)
+
+        self.inputdt_fobs = QLineEdit()
+        self.inputdt_wd = QLineEdit()
+        self.inputdt_bw = QLineEdit()
+        self.inputdt_fw = QLineEdit()
+        self.inputdt_velocity = QLineEdit()
+
+        self.inputdt_beadW = QLineEdit()
+        self.inputdt_beadH = QLineEdit()
+        self.inputdt_backW = QLineEdit()
+        self.inputdt_backH = QLineEdit()
+        self.inputdt_50W = QLineEdit()
+        self.inputdt_50H = QLineEdit()
+        self.inputdt_crack = QLineEdit()
+        self.inputdt_porosity = QLineEdit()
+
+        flay_inputdt.addRow("Name: ", self.inputdt_name)
+        flay_inputdt.addRow("Company: ", self.inputdt_company)
+        flay_inputdt.addRow("Use: ", self.cb_use)
+        flay_inputdt.addRow("Material: ", self.inputdt_material)
+        flay_inputdt.addRow("Weld Type: ", self.cb_weldtype)
+        flay_inputdt.addRow("Diameter(mm): ", self.inputdt_diameter)
+        flay_inputdt.addRow("Thickness(mm): ", self.inputdt_thickness)
+        flay_inputdt.addRow("Backing Thickness(mm): ", self.inputdt_backth)
+        flay_inputdt.addRow("Fobs(mA): ", self.inputdt_fobs)
+        flay_inputdt.addRow("WD(mm): ", self.inputdt_wd)
+        flay_inputdt.addRow("Bw(mA): ", self.inputdt_bw)
+        flay_inputdt.addRow("Fw(mA): ", self.inputdt_fw)
+        flay_inputdt.addRow("Velocity(mm/min): ", self.inputdt_velocity)
+        flay_inputdt.addRow("S.C(mA): ", self.cb_inputdtsc)
+        flay_inputdt.addRow(hlay_sc)
+        flay_inputdt.addRow("Bead Width(mm): ", self.inputdt_beadW)
+        flay_inputdt.addRow("Bead Height(mm): ", self.inputdt_beadH)
+        flay_inputdt.addRow("Back Width(mm): ", self.inputdt_backW)
+        flay_inputdt.addRow("Back Height(mm): ", self.inputdt_backH)
+        flay_inputdt.addRow("50% Width(mm): ", self.inputdt_50W)
+        flay_inputdt.addRow("50% Height(mm): ", self.inputdt_50H)
+        flay_inputdt.addRow("Crack(mm): ", self.inputdt_crack)
+        flay_inputdt.addRow("Porosity(mm): ", self.inputdt_porosity)
+
+        return groupinputdt
 
 
 if __name__ == '__main__':
